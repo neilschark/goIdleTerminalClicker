@@ -63,7 +63,7 @@ func UpgradeFactory(factories []Factory, numberOfFactory int, money *int) error 
 	cost := CostCalculator(factories[numberOfFactory].Level, factories[numberOfFactory].BaseUpgradeCost)
 
 	if cost < *money {
-		factories[numberOfFactory].Level += 1
+		factories[numberOfFactory].UpgradeLevelOfFactory()
 		*money -= cost
 	} else {
 		return errors.New("not enough money")
@@ -79,11 +79,15 @@ type Factory struct {
 	BaseProductionPerSecond int
 }
 
+func (factory *Factory) UpgradeLevelOfFactory() {
+	factory.Level += 1
+}
+
 func main() {
 	SetupCloseHandler()
 	factories := []Factory{}
 
-	factory_names := [5]string{"Screw", "Tool", "Car", "Bus", "Plane"}
+	factory_names := [5]string{"screw", "tool", "car", "bus", "airplane"}
 
 	for _, name := range factory_names {
 		factory := Factory{name, 1, 100, 1}
@@ -93,7 +97,7 @@ func main() {
 		fmt.Println(factory)
 	}
 
-	var money int = 0
+	var money int = 100
 	var messageToUser string = ""
 	var userCommand string = ""
 
